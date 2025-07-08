@@ -39,7 +39,9 @@ export async function signup(req, res) {
 
     //jwt
 
-    const token = jwt.sign({userId: newUser._id})
+    const token = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET_KEY, {
+      expiresIn: "7d"
+    })
   } catch (error) {}
 }
 
