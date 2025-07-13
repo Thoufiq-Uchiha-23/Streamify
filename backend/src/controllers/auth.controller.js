@@ -39,15 +39,24 @@ export async function signup(req, res) {
 
     //jwt
 
+    // TODO: CREATE THE USER IN STREAM AS WELL
+
     const token = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d"
     })
 
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      httpOnly: true,
+      httpOnly: true, // prevent XSS attacks
+      sameSite: "strict", // prevent CSRF attacks
+      secure: process.env.NODE_ENV == "production"
     })
-  } catch (error) {}
+
+    res.status(201).json({success: true, user: newUser})
+  } catch (error) {
+    console.log("Error in signup controller:", error)
+    res.status(500).json({message: "Internal Server Error"})
+  }
 }
 
 export async function login(req, res) {
