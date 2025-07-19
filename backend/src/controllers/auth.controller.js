@@ -30,7 +30,7 @@ export async function signup(req, res) {
     const idx = Math.floor(Math.random() * 100) + 1; // generate a number between 1-100
     const randomAvatar = `https://avatar-placeholder.iran.liara.run/public/${idx}.png`
 
-    const newUser = new User.create({
+    const newUser = await User.create({
       email,
       password,
       fullName,
@@ -49,7 +49,7 @@ export async function signup(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true, // prevent XSS attacks
       sameSite: "strict", // prevent CSRF attacks
-      secure: process.env.NODE_ENV == "production"
+      secure: process.env.NODE_ENV === "production"
     })
 
     res.status(201).json({success: true, user: newUser})
