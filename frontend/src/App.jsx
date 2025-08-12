@@ -9,7 +9,6 @@ import ChatPage from "./pages/ChatPage.jsx";
 import OnboardingPage from "./pages/OnboardingPage.jsx";
 
 import { Toaster } from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
 import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
 
@@ -59,7 +58,15 @@ const App = () => {
         <Route
           path="/onboarding"
           element={
-            isAuthenticated ? <OnboardingPage /> : <Navigate to="/login" />
+            isAuthenticated ? (
+              !isOnboarded ? (
+                <OnboardingPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>
