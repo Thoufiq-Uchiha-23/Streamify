@@ -2,8 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { signup } from "../lib/api.js";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { signup } from "../lib/api.js";
+import useSignup from "../hooks/useSignup.js";
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
@@ -12,16 +13,17 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const queryClient = useQueryClient();
-  const {
-    mutate: signupMutation,
-    isPending,
-    error,
-  } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
+  // const queryClient = useQueryClient();
+  // const {
+  //   mutate: signupMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
 
+  const { isPending, error, signupMutation } = useSignup();
   const handleSignup = (e) => {
     e.preventDefault();
     signupMutation(signupData);
@@ -136,7 +138,7 @@ const SignUpPage = () => {
                           </span>{" "}
                           and{" "}
                           <span className="text-primary hover:underline">
-                            privacy policy  
+                            privacy policy
                           </span>
                         </span>
                       </label>
