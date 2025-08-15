@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import { useLocation } from "react-router";
+import useAuthUser from "../hooks/useAuthUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
-  return (
-    <div>
-      Navbar
-    </div>
-  )
-}
+  const { authUser } = useAuthUser();
+  const location = useLocation();
+  const isChatPage = location.pathname?.startsWith("/chat");
 
-export default Navbar
+  const queryClient = useQueryClient();
+  return <div>Navbar</div>;
+};
+
+export default Navbar;
