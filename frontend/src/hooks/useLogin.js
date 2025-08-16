@@ -3,12 +3,16 @@ import { login } from "../lib/api";
 
 const useLogin = () => {
   const queryClient = useQueryClient();
-  const { mutate, isPending, error } = useMutation({
+  const {
+    mutate: loginMutation,
+    isPending,
+    error,
+  } = useMutation({
     mutationFn: login,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
   });
 
-  return { error, isPending, loginMutaion: mutate };
+  return { error, isPending, loginMutation };
 };
 
 export default useLogin;
