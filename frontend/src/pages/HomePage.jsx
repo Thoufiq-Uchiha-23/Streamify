@@ -35,7 +35,6 @@ const HomePage = () => {
 
   const recommendedUsers = data?.recommendedUsers || [];
 
-  console.log(recommendedUsers[0]);
   const { data: outgoingFriendReqs } = useQuery({
     queryKey: ["outgoingFriendReqs"],
     queryFn: getOutgoingFriendReqs,
@@ -43,8 +42,14 @@ const HomePage = () => {
 
   const { mutate: sendRequestMutation, isPending } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
+    onSuccess: () => {
+      console.log("Friend request sent ✅", data);
+      queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] }); // optional if needed
+    },
+    onError: (error) => {
+      console.error("Error sending request ❌", error);
+    },
   });
 
   useEffect(() => {
